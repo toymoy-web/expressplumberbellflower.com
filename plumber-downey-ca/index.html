@@ -60,6 +60,15 @@ header.site-header{background:var(--color-surface);position:sticky;top:0;z-index
 nav.primary-nav{display:flex;gap:30px;}
 nav.primary-nav a{text-decoration:none;font-weight:500;font-size:0.92rem;color:var(--color-ink);}
 nav.primary-nav a:hover{color:var(--color-brand);}
+.nav-item{position:relative;}
+.nav-item > a{display:flex;align-items:center;gap:5px;}
+.nav-caret{width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .15s;}
+.nav-item:hover .nav-caret{transform:rotate(225deg);margin-top:3px;}
+.nav-dropdown{position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;box-shadow:0 12px 28px rgba(20,20,20,.12);min-width:240px;padding:8px;opacity:0;visibility:hidden;translate:0 6px;transition:opacity .15s,visibility .15s,translate .15s;z-index:80;}
+.nav-item:hover .nav-dropdown{opacity:1;visibility:visible;translate:0 0;}
+.nav-dropdown a{display:block;padding:9px 12px;border-radius:4px;font-size:0.88rem;font-weight:500;}
+.nav-dropdown a:hover{background:#F1F1EF;color:var(--color-brand-dark);}
+.nav-dropdown .nav-see-all{border-top:1px solid var(--color-border);margin-top:6px;padding-top:12px;font-weight:700;color:var(--color-brand-dark);}
 .header-actions{display:flex;align-items:center;gap:16px;}
 .header-phone{font-weight:700;text-decoration:none;color:var(--color-ink);}
 .menu-toggle{display:none;background:none;border:1px solid var(--color-ink);padding:8px 10px;font-size:1.05rem;cursor:pointer;}
@@ -72,15 +81,34 @@ nav.primary-nav a:hover{color:var(--color-brand);}
 .crumb a{color:var(--color-muted);text-decoration:none;}
 .crumb a:hover{color:var(--color-brand-dark);}
 
-.hero{padding:72px 0 56px;border-bottom:1px solid var(--color-border);}
-.hero .wrap{max-width:900px;}
+.hero{padding:0;border-bottom:none;}
+.hero-frame{margin:24px auto 0;max-width:1240px;padding:0 20px;}
+.hero-inner{position:relative;border:2px solid var(--color-ink);border-radius:6px;overflow:hidden;background:var(--color-ink);isolation:isolate;}
+.hero-inner::before{content:'';position:absolute;inset:0;background-image:var(--hero-bg);background-size:cover;background-position:center;z-index:0;}
+.hero-inner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,20,19,.72) 0%,rgba(15,20,19,.82) 55%,rgba(15,20,19,.9) 100%);z-index:1;}
+.hero-content{position:relative;z-index:2;padding:64px 48px;max-width:900px;}
+.hero-content .label{color:#BFE8E0;}
+.hero-content h1{color:#fff;}
+.hero-content .lede{color:#E7E6E2;}
+.hero-content p{color:#E7E6E2;}
+.hero-content .crumb{color:#B7B8BA;}
+.hero-content .crumb a{color:#D8D6CE;}
+.hero-content .chips{margin-top:20px;}
+.hero-content .chip{border-color:rgba(255,255,255,.35);color:#EDECE8;background:rgba(255,255,255,.06);}
+.hero-content .zip{border-color:rgba(255,255,255,.35);color:#EDECE8;background:rgba(255,255,255,.06);}
+.hero-content .id-card{border-top-color:rgba(255,255,255,.2);}
+.hero-content .id-card div{color:#C7C4B6;}
+.hero-content .id-card strong{color:#fff;}
+.hero-content .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.55);}
+.hero-content .btn-outline:hover{background:#fff;color:var(--color-ink);}
+.hero-lg .hero-content{padding:100px 48px 84px;}
+.hero-lg .hero-content h1{font-size:clamp(2.4rem,6vw,4.4rem);}
 .hero h1{font-size:clamp(2rem,5vw,3.4rem);}
 .hero .lede{font-size:1.15rem;max-width:56ch;}
 .hero-ctas{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap;}
 .id-card{margin-top:44px;border-top:1px solid var(--color-border);padding-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;min-width:0;}
 .id-card div{font-size:0.85rem;color:var(--color-muted);}
 .id-card strong{display:block;color:var(--color-ink);font-size:1.05rem;font-weight:700;margin-bottom:2px;}
-.hero-lg{padding:100px 0 80px;}
 .hero-lg h1{font-size:clamp(2.4rem,6vw,4.4rem);}
 
 .section{padding:72px 0;}
@@ -111,13 +139,17 @@ nav.primary-nav a:hover{color:var(--color-brand);}
 .band .step h3{color:#fff;}
 .band .step p{color:#B7B8BA;}
 
-.faq-list{max-width:76ch;}
-.faq-list details{border-bottom:1px solid var(--color-border);padding:18px 0;}
-.faq-list summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px;}
-.faq-list summary::-webkit-details-marker{display:none;}
-.faq-list summary::after{content:'+';color:var(--color-brand);font-size:1.3rem;flex-shrink:0;}
+.faq-list{max-width:76ch;border:1px solid var(--color-border);background:var(--color-surface);}
+.faq-list details{border-bottom:1px solid var(--color-border);}
+.faq-list details:last-child{border-bottom:none;}
+.faq-list details summary{list-style:none;}
+.faq-list details summary::-webkit-details-marker{display:none;}
+.faq-list details summary::marker{display:none;content:'';}
+.faq-list summary{cursor:pointer;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;line-height:1.4;}
+.faq-list summary::after{content:'+';color:var(--color-brand);font-size:1.4rem;font-weight:400;flex-shrink:0;width:20px;text-align:center;}
 .faq-list details[open] summary::after{content:'\2212';}
-.faq-list details p{margin-top:12px;}
+.faq-list details[open] summary{border-bottom:1px solid var(--color-border);}
+.faq-list details p{margin:0;padding:16px 22px 20px;}
 
 .areas-row{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:0.95rem;}
 .areas-row span,.areas-row a{padding:6px 0;border-bottom:1px solid var(--color-border);text-decoration:none;color:var(--color-ink);}
@@ -160,7 +192,10 @@ footer.site-footer{background:var(--color-surface);border-top:1px solid var(--co
 .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
 .chip{border:1px solid var(--color-border);padding:6px 14px;font-size:0.78rem;font-weight:600;color:var(--color-muted);border-radius:2px;}
 
-.kick{font-size:0.82rem;color:var(--color-brand-dark);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;display:block;}
+.kick{font-size:0.82rem;color:var(--color-brand-dark);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;margin-top:36px;display:block;}
+.kick:first-child{margin-top:0;}
+h2{margin-top:0;}
+.wrap > .kick:first-of-type,.wrap > div > .kick:first-of-type{margin-top:0;}
 
 .pricebox{border:1px solid var(--color-border);padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;margin:20px 0;flex-wrap:wrap;background:var(--color-surface);}
 .pricebox b{font-size:1.3rem;}
@@ -210,6 +245,9 @@ footer.site-footer{background:var(--color-surface);border-top:1px solid var(--co
 @media (max-width:560px){.boxgrid{grid-template-columns:1fr;}.sign{border-top:1px solid var(--color-border) !important;}}
 
 @media (max-width:900px){
+  .hero-content{padding:40px 26px;}
+  .hero-lg .hero-content{padding:52px 26px 44px;}
+  .hero-frame{padding:0 14px;}
   nav.primary-nav{display:none;}
   .menu-toggle{display:block;}
   .header-phone{display:none;}
@@ -408,8 +446,20 @@ footer.site-footer{background:var(--color-surface);border-top:1px solid var(--co
   <div class="wrap header-row">
     <a href="/" class="logo"><img src="/logo.png" alt="Bellflower Express Plumbing" width="180" height="63"></a>
     <nav class="primary-nav" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/service-areas/">Service Area</a>
+      <div class="nav-item">
+        <a href="/services/">Services <span class="nav-caret"></span></a>
+        <div class="nav-dropdown">
+          <a href="/backflow-testing-prevention/">Backflow Testing & Prevention</a><a href="/pool-leak-detection-repair/">Pool Leak Detection & Repair</a><a href="/drain-cleaning-unclogging/">Drain Cleaning & Unclogging</a><a href="/leak-detection/">Leak Detection</a><a href="/slab-leak-detection-repair/">Slab Leak Detection & Repair</a>
+          <a href="/services/" class="nav-see-all">See All 22 Services &rarr;</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/service-areas/">Service Area <span class="nav-caret"></span></a>
+        <div class="nav-dropdown">
+          <a href="/plumber-cerritos-ca/">Cerritos, CA</a><a href="/plumber-downey-ca/">Downey, CA</a><a href="/plumber-lynwood-ca/">Lynwood, CA</a><a href="/plumber-buena-park-ca/">Buena Park, CA</a><a href="/plumber-seal-beach-ca/">Seal Beach, CA</a>
+          <a href="/service-areas/" class="nav-see-all">See All Areas &rarr;</a>
+        </div>
+      </div>
       <a href="/about/">About</a>
       <a href="/blog/">Blog</a>
       <a href="/contact/">Contact</a>
@@ -432,8 +482,7 @@ footer.site-footer{background:var(--color-surface);border-top:1px solid var(--co
 
 <main id="main-content">
 
-<section class="hero">
-  <div class="wrap">
+<section class="hero "><div class="hero-frame"><div class="hero-inner" style="--hero-bg:url('/img/oldest-mcdonalds-downey-ca.webp')"><div class="hero-content">
     <div class="crumb"><a href="/">Home</a> / <a href="/service-areas/">Service Areas</a> / Downey</div>
     <span class="label">Emergency Plumber &nbsp;/&nbsp; Downey, CA.</span>
     <h1>Emergency Plumber Downey CA Near Bellflower</h1>
@@ -443,8 +492,7 @@ footer.site-footer{background:var(--color-surface);border-top:1px solid var(--co
     <div class="hero-ctas">
       <a class="btn" href="tel:+15624889614">Call (562) 488-9614</a>
     </div>
-  </div>
-</section>
+</div></div></div></section>
 
 <section class="section">
   <div class="wrap twocol">
@@ -487,7 +535,7 @@ footer.site-footer{background:var(--color-surface);border-top:1px solid var(--co
 <div class="mapwrap">
 <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="Plumbing service area map: Downey, CA" src="https://maps.google.com/maps?q=Downey%2C+CA&output=embed&z=12"></iframe>
 </div>
-      <div class="kick">FAQs.</div><h2>Common Questions</h2><details><summary>Is Downey part of your regular coverage area or a special trip?</summary><p>Regular coverage, with the same flat pricing and dispatch team as Bellflower.</p></details><details><summary>Do you cover all three Downey ZIP codes?</summary><p>Yes, 90240, 90241, and 90242 are all within standard coverage.</p></details><details><summary>Does an older Downey home need different service than a newer one?</summary><p>Sometimes. Original tract-era homes are more likely to need repiping or slab leak work. Newer construction tends toward fixture-specific repairs.</p></details><details><summary>Can you handle a commercial property along Firestone Blvd?</summary><p>Yes, full commercial plumbing is available throughout Downey, not just residential service.</p></details><details><summary>Why is Downey's population so much bigger than Bellflower's?</summary><p>Downey covers about 12.6 square miles compared to Bellflower's 6.1, roughly twice the land area, which combined with denser commercial and residential development accounts for the larger population.</p></details><details><summary>Does Downey's larger size mean longer wait times for dispatch?</summary><p>Not typically. We treat Downey as core coverage, not an overflow area, so response times track closely with our Bellflower calls depending on which part of the city you're in.</p></details><details><summary>Do you handle plumbing for Downey's older commercial buildings?</summary><p>Yes, including older commercial properties along Downey's established retail corridors, which sometimes carry original plumbing infrastructure needing the same kind of assessment as an older residential property.</p></details><details><summary>Can you work on a rental property on behalf of a landlord in Downey?</summary><p>Yes, we coordinate directly with landlords and property managers, not just tenants, for both scheduled and emergency work.</p></details><details><summary>Do you offer maintenance plans for Downey properties like you do in Bellflower?</summary><p>Yes, recurring maintenance scheduling is available across the entire coverage area, not limited to Bellflower.</p></details><details><summary>How do I confirm my Downey address is actually within your coverage?</summary><p>Call with your address and ZIP code and we'll confirm before dispatch, since Downey's larger overall size means it's worth double-checking on the edges of the city.</p></details><details><summary>Is there a specific neighborhood in Downey you cover more than others?</summary><p>No, coverage is citywide across all three ZIP codes, not limited to specific neighborhoods.</p></details><details><summary>Do you dispatch to Downey the same day for non-emergency repairs?</summary><p>Usually, yes, same-day scheduling is available for most standard repairs, not just emergencies.</p></details><details><summary>Can you diagnose a slab leak in a home this close to the Rio Hondo?</summary><p>Yes, proximity to the river doesn't change the detection method, though it's a real factor in why we double-check drainage and grading around a slab leak repair in that part of the city.</p></details><details><summary>Is emergency service available in Downey?</summary><p>Yes, around-the-clock emergency dispatch covers Downey the same way it covers Bellflower, with no reduced hours given the city's larger size.</p></details>
+      <div class="kick">FAQs.</div><h2>Common Questions</h2><div class="faq-list"><details><summary>Is Downey part of your regular coverage area or a special trip?</summary><p>Regular coverage, with the same flat pricing and dispatch team as Bellflower.</p></details><details><summary>Do you cover all three Downey ZIP codes?</summary><p>Yes, 90240, 90241, and 90242 are all within standard coverage.</p></details><details><summary>Does an older Downey home need different service than a newer one?</summary><p>Sometimes. Original tract-era homes are more likely to need repiping or slab leak work. Newer construction tends toward fixture-specific repairs.</p></details><details><summary>Can you handle a commercial property along Firestone Blvd?</summary><p>Yes, full commercial plumbing is available throughout Downey, not just residential service.</p></details><details><summary>Why is Downey's population so much bigger than Bellflower's?</summary><p>Downey covers about 12.6 square miles compared to Bellflower's 6.1, roughly twice the land area, which combined with denser commercial and residential development accounts for the larger population.</p></details><details><summary>Does Downey's larger size mean longer wait times for dispatch?</summary><p>Not typically. We treat Downey as core coverage, not an overflow area, so response times track closely with our Bellflower calls depending on which part of the city you're in.</p></details><details><summary>Do you handle plumbing for Downey's older commercial buildings?</summary><p>Yes, including older commercial properties along Downey's established retail corridors, which sometimes carry original plumbing infrastructure needing the same kind of assessment as an older residential property.</p></details><details><summary>Can you work on a rental property on behalf of a landlord in Downey?</summary><p>Yes, we coordinate directly with landlords and property managers, not just tenants, for both scheduled and emergency work.</p></details><details><summary>Do you offer maintenance plans for Downey properties like you do in Bellflower?</summary><p>Yes, recurring maintenance scheduling is available across the entire coverage area, not limited to Bellflower.</p></details><details><summary>How do I confirm my Downey address is actually within your coverage?</summary><p>Call with your address and ZIP code and we'll confirm before dispatch, since Downey's larger overall size means it's worth double-checking on the edges of the city.</p></details><details><summary>Is there a specific neighborhood in Downey you cover more than others?</summary><p>No, coverage is citywide across all three ZIP codes, not limited to specific neighborhoods.</p></details><details><summary>Do you dispatch to Downey the same day for non-emergency repairs?</summary><p>Usually, yes, same-day scheduling is available for most standard repairs, not just emergencies.</p></details><details><summary>Can you diagnose a slab leak in a home this close to the Rio Hondo?</summary><p>Yes, proximity to the river doesn't change the detection method, though it's a real factor in why we double-check drainage and grading around a slab leak repair in that part of the city.</p></details><details><summary>Is emergency service available in Downey?</summary><p>Yes, around-the-clock emergency dispatch covers Downey the same way it covers Bellflower, with no reduced hours given the city's larger size.</p></details></div>
     </div>
     <aside class="sidecard">
       <h3>Contact</h3>
